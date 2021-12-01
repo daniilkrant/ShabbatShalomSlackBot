@@ -1,0 +1,20 @@
+[
+  {
+    "type": "header",
+    "text": {
+      "type": "plain_text",
+      "text": "Shabbat Shalom! :flag-il:\n:flag-il: !שַׁבָּת שָׁלוֹם",
+      "emoji": "True"
+    }
+  },
+  {
+    "type": "image",
+    "title": {
+      "type": "plain_text",
+      "text": " ",
+      "emoji": "True"
+    },
+    "image_url": "https://w2.chabad.org/media/images/1029/OlAJ10294609.jpg",
+    "alt_text": "marg"
+  }
+]

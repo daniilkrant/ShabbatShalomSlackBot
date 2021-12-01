@@ -1,37 +1,30 @@
 import datetime
+import os
 
 import requests
+import json
 from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
 
-token = ""
-message_blocks = [
-    {
-        "type": "header",
-        "text": {
-            "type": "plain_text",
-            "text": "Shabbat Shalom! :flag-il:\n:flag-il: !שַׁבָּת שָׁלוֹם",
-            "emoji": True
-        }
-    },
-    {
-        "type": "image",
-        "title": {
-            "type": "plain_text",
-            "text": " ",
-            "emoji": True
-        },
-        "image_url": "https://w2.chabad.org/media/images/1029/OlAJ10294609.jpg",
-        "alt_text": "marg"
-    }
-]
-
 sunset_api_url = "https://api.sunrise-sunset.org/json"
-jer_lat = 31.771959
-jer_lng = 35.217018
+
+slack_message_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'slack_message.json')
+customer_location_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'shabbat_location.json')
+slack_token_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'token.json')
+
+with open(slack_token_file_path) as json_file:
+    token = json.load(json_file)["slack_token"]
+
+with open(slack_message_file_path) as json_file:
+    message_blocks = json.load(json_file)
+
+with open(customer_location_file_path) as json_file:
+    location = json.load(json_file)
+    shabbat_lat = location["lat"]
+    shabbat_lng = location["lng"]
 
 
-sunset_api_params = {'lat': jer_lat, 'lng': jer_lng, 'date': 'today'}
+sunset_api_params = {'lat': shabbat_lat, 'lng': shabbat_lng, 'date': 'today'}
 r = requests.get(url=sunset_api_url, params=sunset_api_params)
 sunset_time_string = r.json()['results']['sunset']  # <-- UTC, Israel --> UTC + 2, Shabbat --> (Israel - 18 min)
 
